@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NOKI COFFEE</title>
+<meta name="description" content="蔵前の小さなスペシャルティコーヒースタンド NOKI COFFEE。自家焙煎の一杯を、軒先で。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}img{max-width:100%}
+/* Layout: 軒先のスタンド — 大きな店名とカップの真上ビュー、その下に紙のメニュー表のような一覧 */
+:root{
+  --bg:#EDEFF5; --surface:#FFFFFF; --ink:#0F1533; --muted:#58607F; --line:#CDD2E2;
+  --accent:#2340D9; --accent-ink:#FFFFFF; --sun:#F2CF4A; --coffee:#3B2517; --crema:#C98A4B;
+  --display:"Bricolage Grotesque","Zen Kaku Gothic New",system-ui,sans-serif;
+  --body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  --mono:"DM Mono",ui-monospace,"SFMono-Regular",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B0F26; --surface:#141A3A; --ink:#E9ECF7; --muted:#9CA4C6; --line:#283060;
+  --accent:#7385FF; --accent-ink:#0B0F26; --sun:#F2CF4A; --coffee:#2A1A10; --crema:#C98A4B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B0F26; --surface:#141A3A; --ink:#E9ECF7; --muted:#9CA4C6; --line:#283060;
+  --accent:#7385FF; --accent-ink:#0B0F26; --sun:#F2CF4A; --coffee:#2A1A10; --crema:#C98A4B; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.02em;text-decoration:none}
+.logo span{color:var(--accent)}
+.nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:14px}
+.nav a{text-decoration:none}
+.nav ul a:hover{color:var(--accent)}
+@media (max-width:560px){.nav ul{gap:14px;font-size:13px}.nav li.hide-sm{display:none}}
+
+/* hero */
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding-block:56px 72px}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(84px,17vw,210px);line-height:.82;letter-spacing:-.055em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.tagline{font-size:clamp(22px,3.2vw,32px);font-weight:700;margin-top:28px;letter-spacing:.02em}
+.lead{color:var(--muted);margin-top:12px;max-width:34em}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;border:2px solid var(--ink);transition:transform .2s}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:hover{transform:translateY(-2px)}
+
+.cupstage{position:relative;width:100%;max-width:420px;aspect-ratio:1;margin-inline:auto}
+.ring{position:absolute;inset:0;width:100%;height:100%;animation:spin 40s linear infinite}
+.ring text{font-family:var(--mono);font-size:10.5px;letter-spacing:.32em;fill:var(--ink)}
+.saucer{position:absolute;inset:17%;border-radius:50%;background:var(--surface);box-shadow:0 30px 60px -30px rgba(15,21,51,.45),inset 0 0 0 1px var(--line)}
+.cup{position:absolute;inset:27%;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px var(--surface),0 0 0 7px var(--line)}
+.coffee{position:absolute;inset:8%;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,#f3e2c7 0 9%,var(--crema) 10% 22%,#f3e2c7 23% 28%,var(--crema) 29% 46%,#8a5630 62%,var(--coffee) 82%)}
+.handle{position:absolute;right:7%;top:50%;width:16%;height:9%;transform:translateY(-50%);border-radius:0 40px 40px 0;background:var(--accent)}
+.sun{position:absolute;left:4%;top:8%;background:var(--sun);color:#0F1533;font-family:var(--mono);font-size:12px;font-weight:500;padding:8px 12px;border-radius:999px;transform:rotate(-8deg);line-height:1.3;text-align:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.ring{animation:none}html{scroll-behavior:auto}.btn{transition:none}}
+@media (max-width:760px){.hero .wrap{grid-template-columns:1fr;padding-block:36px 56px}.cupstage{max-width:320px}}
+
+/* ticker */
+.ticker{background:var(--ink);color:var(--bg);overflow:hidden;white-space:nowrap;font-family:var(--mono);font-size:13px;letter-spacing:.12em;padding-block:12px}
+.ticker div{display:inline-block;animation:slide 30s linear infinite}
+.ticker span{margin-right:48px}
+@keyframes slide{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.ticker div{animation:none}}
+
+/* sections */
+section.block .wrap{padding-block:88px}
+.head{display:flex;flex-direction:column;gap:10px;margin-bottom:40px}
+.head h2{font-family:var(--display);font-weight:800;font-size:clamp(36px,6vw,64px);line-height:1;letter-spacing:-.035em}
+.head p{color:var(--muted);max-width:36em}
+
+.concept{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--ink)}
+.concept div{padding:28px 24px 8px 0;display:flex;flex-direction:column;gap:10px;min-width:0}
+.concept div + div{padding-left:24px;border-left:1px solid var(--line)}
+.concept h3{font-size:21px;font-weight:700}
+.concept .big{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;color:var(--accent);letter-spacing:-.03em}
+.concept p{color:var(--muted);font-size:15px}
+@media (max-width:760px){.concept{grid-template-columns:1fr}.concept div,.concept div + div{padding:24px 0;border-left:0;border-bottom:1px solid var(--line)}}
+
+/* today's brew */
+.brew{background:var(--accent);color:var(--accent-ink)}
+.brew .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.brew .label{color:inherit;opacity:.8}
+.brew h2{font-family:var(--display);font-weight:800;font-size:clamp(40px,6.5vw,72px);line-height:.95;letter-spacing:-.04em;margin-top:12px}
+.brew .origin{margin-top:16px;font-size:17px}
+.notes{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.notes span{border:1.5px solid currentColor;border-radius:999px;padding:4px 14px;font-size:14px}
+.recipe{display:grid;grid-template-columns:1fr 1fr;border-top:1.5px solid currentColor}
+.recipe div{padding:18px 0;border-bottom:1.5px solid currentColor;display:flex;flex-direction:column;gap:2px}
+.recipe div:nth-child(odd){padding-right:16px;border-right:1.5px solid currentColor}
+.recipe div:nth-child(even){padding-left:20px}
+.recipe dt{font-family:var(--mono);font-size:12px;letter-spacing:.14em;opacity:.8}
+.recipe dd{margin:0;font-family:var(--display);font-weight:700;font-size:34px;line-height:1.1;font-variant-numeric:tabular-nums}
+@media (max-width:760px){.brew .wrap{grid-template-columns:1fr;gap:32px}}
+
+/* menu */
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.menu h3{font-family:var(--mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding-bottom:12px;border-bottom:2px solid var(--ink);font-weight:500}
+.menu ul{list-style:none;margin:0;padding:0}
+.menu li{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:18px 0;border-bottom:1px dashed var(--line)}
+.menu .name{font-weight:700;font-size:17px;min-width:0}
+.menu .price{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+.menu .desc{grid-column:1/-1;color:var(--muted);font-size:14px}
+.tag{display:inline-block;margin-left:8px;font-size:11px;font-weight:700;background:var(--sun);color:#0F1533;padding:1px 8px;border-radius:999px;vertical-align:2px}
+.menu-note{margin-top:24px;color:var(--muted);font-size:13px}
+@media (max-width:760px){.menu{grid-template-columns:1fr;gap:40px}}
+
+/* access */
+.access{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
+.info{display:grid;grid-template-columns:max-content 1fr;gap:0;border-top:2px solid var(--ink)}
+.info dt,.info dd{padding:16px 0;border-bottom:1px solid var(--line);margin:0}
+.info dt{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--muted);padding-right:28px;padding-top:19px}
+.info dd{min-width:0}
+.mapcard{background:var(--surface);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:16px;box-shadow:inset 0 0 0 1px var(--line)}
+.mapart{aspect-ratio:4/3;max-width:100%;border-radius:12px;background:var(--bg);position:relative;overflow:hidden}
+.mapart svg{width:100%;height:100%;display:block}
+@media (max-width:760px){.access{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:32px;font-size:13px;color:var(--muted)}
+footer .logo{color:var(--ink)}
+</style>
+
+</head>
+<body>
+<nav class="nav" aria-label="メインメニュー">
+  <div class="wrap">
+    <a class="logo" href="#top">NOKI<span>.</span></a>
+    <ul>
+      <li class="hide-sm"><a href="#concept">Concept</a></li>
+      <li><a href="#brew">Today</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#access">Access</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <p class="label">Specialty Coffee Stand — Kuramae, Tokyo</p>
+      <h1>NOKI<br><em>COFFEE</em></h1>
+      <p class="tagline">軒先で、いい一杯を。</p>
+      <p class="lead">毎週火曜に焙煎する豆を、一杯ずつハンドドリップで。朝7時から、通勤前の5分にも、休日のゆっくりした午後にも。</p>
+      <div class="cta">
+        <a class="btn primary" href="#menu">メニューを見る</a>
+        <a class="btn" href="#access">アクセス</a>
+      </div>
+    </div>
+    <div class="cupstage" aria-hidden="true">
+      <svg class="ring" viewBox="0 0 300 300">
+        <defs><path id="circ" d="M150,150 m-138,0 a138,138 0 1,1 276,0 a138,138 0 1,1 -276,0"/></defs>
+        <text><textPath href="#circ">NOKI COFFEE · ROASTED EVERY TUESDAY · KURAMAE TOKYO · OPEN 7AM · </textPath></text>
+      </svg>
+      <div class="saucer"></div>
+      <div class="cup"><div class="coffee"></div></div>
+      <div class="handle"></div>
+      <div class="sun">OPEN<br>7:00</div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true"><div>
+  <span>ETHIOPIA GUJI — WASHED</span><span>COLOMBIA HUILA — NATURAL</span><span>KENYA NYERI — AA</span><span>GUATEMALA ANTIGUA — WASHED</span><span>HOUSE BLEND "NOKI" — MEDIUM</span>
+  <span>ETHIOPIA GUJI — WASHED</span><span>COLOMBIA HUILA — NATURAL</span><span>KENYA NYERI — AA</span><span>GUATEMALA ANTIGUA — WASHED</span><span>HOUSE BLEND "NOKI" — MEDIUM</span>
+</div></div>
+
+<section class="block" id="concept">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Concept</p>
+      <h2>12席の、ちいさな焙煎所。</h2>
+      <p>倉庫だった建物の軒下を借りて始めたコーヒースタンドです。豆の個性がいちばん出る浅煎りから、毎日飲みたい中煎りのブレンドまで。</p>
+    </div>
+    <div class="concept">
+      <div><span class="big">Tue.</span><h3>毎週火曜に自家焙煎</h3><p>焙煎から7日以内の豆だけを使います。香りが立つピークで淹れるためです。</p></div>
+      <div><span class="big">100g〜</span><h3>豆の量り売り</h3><p>その場で挽き目を合わせます。ご自宅の器具を教えてください。</p></div>
+      <div><span class="big">7:00</span><h3>朝7時オープン</h3><p>平日の朝はテイクアウトがスムーズ。マイボトルなら50円引きです。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block brew" id="brew">
+  <div class="wrap">
+    <div>
+      <p class="label">Today's Drip</p>
+      <h2>Ethiopia<br>Guji</h2>
+      <p class="origin">エチオピア グジ / ウォッシュト / 浅煎り</p>
+      <div class="notes"><span>ジャスミン</span><span>白桃</span><span>アールグレイ</span></div>
+    </div>
+    <dl class="recipe" aria-label="本日のレシピ">
+      <div><dt>DOSE</dt><dd>15g</dd></div>
+      <div><dt>WATER</dt><dd>240g</dd></div>
+      <div><dt>TEMP</dt><dd>92℃</dd></div>
+      <div><dt>TIME</dt><dd>2:45</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="block" id="menu">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Menu</p>
+      <h2>Menu</h2>
+    </div>
+    <div class="menu">
+      <div>
+        <h3>Coffee</h3>
+        <ul>
+          <li><span class="name">ハンドドリップ<span class="tag">本日の豆</span></span><span class="price">¥600</span><span class="desc">V60で一杯ずつ。豆は3種類から選べます。</span></li>
+          <li><span class="name">エスプレッソ</span><span class="price">¥450</span><span class="desc">ハウスブレンド「NOKI」。ダブルショット。</span></li>
+          <li><span class="name">カフェラテ</span><span class="price">¥620</span><span class="desc">オーツミルクに変更 +¥60</span></li>
+          <li><span class="name">アイスコーヒー</span><span class="price">¥580</span><span class="desc">急冷式で、すっきりした後味に。</span></li>
+          <li><span class="name">コーヒートニック</span><span class="price">¥680</span><span class="desc">エスプレッソとトニックウォーター、オレンジピール。</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Food &amp; Sweets</h3>
+        <ul>
+          <li><span class="name">バスクチーズケーキ</span><span class="price">¥550</span><span class="desc">浅煎りのドリップとよく合います。</span></li>
+          <li><span class="name">季節のフルーツサンド<span class="tag">秋</span></span><span class="price">¥750</span><span class="desc">10月は和梨とシャインマスカット。</span></li>
+          <li><span class="name">グラノーラボウル</span><span class="price">¥700</span><span class="desc">自家製グラノーラ、ヨーグルト、はちみつ。</span></li>
+          <li><span class="name">あんバタートースト</span><span class="price">¥480</span><span class="desc">朝7:00〜10:00限定。</span></li>
+          <li><span class="name">コーヒー豆 100g</span><span class="price">¥1,200〜</span><span class="desc">その場で挽けます。</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="menu-note">価格はすべて税込です。テイクアウトも同じ価格です。</p>
+  </div>
+</section>
+
+<section class="block" id="access">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Access</p>
+      <h2>Access</h2>
+    </div>
+    <div class="access">
+      <dl class="info">
+        <dt>ADDRESS</dt><dd>〒111-0051<br>東京都台東区蔵前 0-0-0 1F</dd>
+        <dt>STATION</dt><dd>都営大江戸線「蔵前駅」A7出口から徒歩3分</dd>
+        <dt>HOURS</dt><dd>平日 7:00–18:00<br>土日祝 8:00–19:00</dd>
+        <dt>CLOSED</dt><dd>水曜日</dd>
+        <dt>SEATS</dt><dd>12席(テラス4席)/ 全席禁煙</dd>
+        <dt>PAYMENT</dt><dd>現金・クレジットカード・交通系IC・QR決済</dd>
+        <dt>INSTAGRAM</dt><dd>@noki.coffee</dd>
+      </dl>
+      <div class="mapcard">
+        <div class="mapart" aria-hidden="true">
+          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="300" fill="var(--bg)"/>
+            <rect x="300" y="0" width="70" height="300" fill="var(--accent)" opacity=".18"/>
+            <text x="335" y="150" fill="var(--muted)" font-family="DM Mono, monospace" font-size="11" text-anchor="middle" transform="rotate(90 335 150)">SUMIDA RIVER</text>
+            <path d="M0 120 H300 M0 210 H300 M90 0 V300 M200 0 V300" stroke="var(--line)" stroke-width="14" fill="none"/>
+            <circle cx="90" cy="210" r="12" fill="var(--ink)"/>
+            <text x="90" y="243" fill="var(--ink)" font-family="DM Mono, monospace" font-size="11" text-anchor="middle">A7 蔵前駅</text>
+            <path d="M102 210 H200 V132" stroke="var(--accent)" stroke-width="3" stroke-dasharray="6 6" fill="none"/>
+            <circle cx="200" cy="120" r="18" fill="var(--accent)"/>
+            <text x="200" y="125" fill="var(--accent-ink)" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="14" text-anchor="middle">N</text>
+            <text x="226" y="100" fill="var(--ink)" font-family="DM Mono, monospace" font-size="11">NOKI COFFEE</text>
+          </svg>
+        </div>
+        <p>駅を出て右へ。ひとつ目の角を左に曲がると、青い軒が見えます。</p>
+        <a class="btn" href="https://www.google.com/maps/search/?api=1&query=%E8%94%B5%E5%89%8D%E9%A7%85" target="_blank" rel="noopener">地図アプリで開く</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="logo">NOKI<span style="color:var(--accent)">.</span> COFFEE</span>
+    <span>※ このサイトは制作サンプルです(店舗・住所は架空です)</span>
+    <span>© 2026 NOKI COFFEE</span>
+  </div>
+</footer>
+</body>
+</html>
